@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Summer heatwave explorer - README</title>
+<!--
+  Plain HTML, linked from the web app as "readme.html" (keep it in the same folder as index.html).
+  Common tags:  <p>paragraph</p>  <h2>heading</h2>  <a href="URL">link</a>
+                <ul><li>list item</li></ul>  <b>bold</b>  <i>italic</i>  <code>code</code>
+  The CSS block just below sets fonts and colours.
+-->
+<style>
+  body { max-width: 820px; margin: 0 auto; padding: 24px 18px 60px; color: #1d2733; background: #fff;
+         font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  h1 { font-size: 1.6rem; margin-bottom: 0.2em; }
+  h2 { font-size: 1.2rem; margin-top: 1.8em; border-bottom: 1px solid #d6dce3; padding-bottom: 4px; }
+  h3 { font-size: 1.02rem; margin-top: 1.3em; }
+  a { color: #1f5fa8; }
+  code { background: #eef1f5; padding: 1px 5px; border-radius: 4px; font-size: 0.92em; }
+  .box { background: #f3f6fa; border: 1px solid #d6dce3; border-radius: 8px; padding: 10px 14px; }
+  .small { font-size: 0.88rem; color: #5c6b7a; }
+  table { border-collapse: collapse; margin: 8px 0; }
+  td, th { border: 1px solid #d6dce3; padding: 5px 10px; text-align: left; vertical-align: top; }
+  th { background: #eef1f5; }
+</style>
+</head>
+<body>
+
+<p><a href="javascript:window.close()">&larr; back to the explorer</a> <span class="small">(or just close this tab)</span></p>
+
+<h1>Summer heatwave explorer: README</h1>
+<p class="box">
+  <b>Reference:</b> S. C. Chapman and D. A. Stainforth (2026),
+  <i>1960s European heatwaves are becoming summer climate</i>, in review.
+</p>
+
+<h2>What this is</h2>
+<p>
+  An interactive view of how the frequency and intensity of summer (June-July-August) heatwaves
+  have changed across Europe since the 1950s, using the E-OBS gridded daily temperature data set.
+  It uses the <i>crossing-theory</i> relation between the length of a hot spell, how often it is
+  expected to occur, and the temperature threshold that defines it:
+</p>
+<p class="box"><code>D(u) = 92 &times; RP(u) &times; (1 &minus; C(u))</code></p>
+<p>
+  where <code>u</code> is a temperature threshold, <code>D</code> the mean duration of runs of days above
+  <code>u</code> (days), <code>RP</code> the average return period of such a run (years), <code>C(u)</code>
+  the cumulative distribution function (cdf) of daily summer temperature, and 92 the number of days in
+  June&ndash;August. Given the cdf, any one of <code>D</code>, <code>RP</code> or <code>u</code> follows from
+  the other two.
+  The method follows Chapman, Watkins &amp; Stainforth (2019), <i>Warming trends in summer heatwaves</i>,
+  Geophysical Research Letters, 46, 1634&ndash;1640, doi:10.1029/2018GL081286.
+</p>
+
+<h2>Controls</h2>
+<table>
+  <tr><th>Variable</th><td><b>TX</b> is the daily <i>maximum</i> temperature, <b>TN</b> the daily <i>minimum</i>
+    temperature. Everything on the page is recomputed for the one you choose.</td></tr>
+  <tr><th>Window length</th><td>The cdf for a given year is estimated from the summers in a window of
+    <b>9, 15 or 21 years</b> centred on that year (&ldquo;central year&rdquo;). Longer windows give smoother,
+    more reliable estimates but blur rapid change; shorter windows follow change more closely but are noisier.
+    The first and last year of every window carry <b>half weight</b>, so that one extreme summer enters and
+    leaves the estimate gradually, rather than switching on and off at once.</td></tr>
+  <tr><th>Return period</th><td>(Regional time series tab.) A <b>10-year / 5-year</b> button chooses whether the
+    time-series panels are set around a ~10-year or a ~5-year return period: 10-year uses heatwave durations of
+    8&ndash;10 days, 5-year uses 4&ndash;5 days. The maps are not affected.</td></tr>
+</table>
+
+<h2>Tab 1: Maps (movie)</h2>
+<p>
+  Move the slider, or press <b>Play</b>, to step through central years. Hover the pointer over the map to read
+  the value at a grid cell. <b>Save image</b> stores the current frame as a PNG.
+  Three maps are available:
+</p>
+<h3>Return period (dual duration scale)</h3>
+<p>
+  The return period, in years, of a heatwave of a fixed duration, relative to a <b>fixed threshold</b>: at
+  every grid cell, the 99th-percentile summer temperature of the baseline window (centred on 1960). It
+  therefore shows how much more often a heatwave that was a 1-in-<i>N</i>-year event in 1960 now occurs.
+  Small return period (red) means such heatwaves have become frequent; large (blue) means rare. Because the
+  relation above is linear in <code>D</code>, one map serves two durations: the <b>right-hand</b> scale gives the
+  return period for the longer duration (the colours are drawn from this one) and the <b>left-hand</b> scale gives the
+  return period for the shorter duration, read at the same colour. The flat dark red at the bottom of the
+  scale marks return periods of less than 1 year on the left-hand (shorter-duration) scale. White cells are
+  sea, have insufficient data, or lie beyond the 99.5th percentile of the window&rsquo;s distribution, where
+  the estimate is not considered reliable.
+</p>
+<h3>99th-percentile temperature (threshold)</h3>
+<p>
+  The temperature exceeded on 1% of summer days in the window centred on the year shown (the same map as
+  Figure 1 of the underlying analysis).
+</p>
+<h3>Change in threshold since the baseline year</h3>
+<p>
+  The difference between that threshold and the threshold in the baseline window (centred on 1960), in &deg;C.
+</p>
+
+<h2>Tab 2: Regional time series</h2>
+<p>
+  <b>Click a square on the small map</b> (or, on the Maps tab, double-click a location) to choose a region.
+  Three panels follow the central year of the window; each vertical bar spans
+  the range between two durations or return periods (blue and red dots mark its two ends):
+</p>
+<ul>
+  <li><b>(a)</b> the return period of a heatwave of 8&ndash;10 days (or 4&ndash;5 days in the 5-year case) above the
+      fixed 1960 threshold <i>T<sub>0</sub></i>;</li>
+  <li><b>(b)</b> the mean duration of heatwaves with return periods of 9&ndash;11 years (4&ndash;6 years), above the
+      same fixed threshold;</li>
+  <li><b>(c)</b> the threshold temperature <i>T*</i> that corresponds to a 10-year (5-year) return period for
+      8&ndash;10-day (4&ndash;5-day) heatwaves in each window&rsquo;s own distribution. The horizontal line is
+      <i>T<sub>0</sub></i>; the black &times; marks each window&rsquo;s own 99th percentile.</li>
+</ul>
+<p>The grey shading combines three separate sources of uncertainty, each drawn around both ends of the bar:</p>
+<ol>
+  <li><b>Bandwidth resolution limit</b> (lightest): the cdf is smoothed with a kernel of fixed width, so
+      temperatures cannot be resolved more finely than that width.</li>
+  <li><b>E-OBS ensemble spread</b> (middle): E-OBS provides an ensemble of equally plausible gridded fields;
+      this band reflects its stated spread (the 5th&ndash;95th percentile range), averaged over the window.</li>
+  <li><b>Bootstrap sampling uncertainty</b> (darkest): whole days are resampled (keeping each day&rsquo;s spatial
+      pattern together, because neighbouring grid cells are not independent) to show how much the estimate would
+      vary for a finite sample of days; the 5th&ndash;95th percentile range of 100 resamples is shown.</li>
+</ol>
+<h3>Regions</h3>
+<p>
+  The map is divided into a fixed grid of <b>regions of 5&times;5 grid cells</b> (about 1.25&deg; &times; 1.25&deg;).
+  Each region pools the daily values of its 25 grid cells, which reduces noise compared with a single cell.
+  All numbers were calculated in advance with the same method, window weights, kernel bandwidth and
+  100-resample day-block bootstrap as the maps. Regions with too little data (mostly sea) are not selectable.
+</p>
+
+<h2>Method in brief</h2>
+<ul>
+  <li><b>Data:</b> E-OBS v33.0e ensemble-mean daily TX and TN at 0.25&deg;, June&ndash;August, 1950&ndash;2025,
+      over 10&deg;W&ndash;20&deg;E, 35&deg;N&ndash;65&deg;N.</li>
+  <li><b>Estimating the cdf:</b> kernel density estimate with a Gaussian kernel. One bandwidth is used everywhere
+      (maps, regions and bootstraps; TX and TN each have their own): Silverman&rsquo;s rule applied to a
+      random subsample (200,000 values) of all summer values in the domain.</li>
+  <li><b>Windows:</b> centred on every year for which the whole window lies inside the record.</li>
+  <li><b>Return periods</b> follow from the equation above; values for which the baseline threshold lies
+      beyond the 99.5th percentile of a window&rsquo;s cdf are masked.</li>
+</ul>
+
+<h2>Data credits and acknowledgements</h2>
+<div class="box">
+  <p>
+    <b>E-OBS data.</b> This page uses the E-OBS gridded data set, version 33.0e, ensemble mean and ensemble
+    spread of daily maximum (TX) and minimum (TN) temperature at 0.25&deg; resolution.
+  </p>
+  <p>
+    Please cite: Cornes, R., van der Schrier, G., van den Besselaar, E.J.M. and Jones, P.D. (2018),
+    <i>An ensemble version of the E-OBS temperature and precipitation datasets</i>,
+    J. Geophys. Res. Atmos., 123. doi:<a href="https://doi.org/10.1029/2017JD028200">10.1029/2017JD028200</a>.
+  </p>
+  <p>
+    <i>We acknowledge the E-OBS dataset from the EU-FP6 project UERRA (<a href="https://www.uerra.eu">https://www.uerra.eu</a>)
+    and the Copernicus Climate Change Service, and the data providers in the ECA&amp;D project
+    (<a href="https://www.ecad.eu">https://www.ecad.eu</a>).</i>
+  </p>
+  <p class="small">
+    E-OBS is distributed by the Copernicus Climate Change Service / the Royal Netherlands Meteorological
+    Institute (KNMI): <a href="https://surfobs.climate.copernicus.eu/dataaccess/access_eobs.php">data access</a>.
+    Please check the current E-OBS terms of use and citation guidance there.
+  </p>
+</div>
+<p>
+  Country outlines: <a href="https://www.naturalearthdata.com/">Natural Earth</a> (public domain).
+</p>
+
+<h2>Caveats</h2>
+<ul>
+  <li>E-OBS is an interpolation of station observations; station coverage differs between regions and has
+      changed over time (it was sparse in the early 1950s in several regions). Early-period values and
+      their uncertainty should be read with that in mind.</li>
+  <li>Individual very hot summers can cause visible steps in the time series as they enter or leave a window
+      (the half weighting on the first and last year only softens this). This is a property of estimating
+      a rare-event tail from a short window, not of the data.</li>
+  <li>The 0.99 quantile and the return periods are estimated, not observed; see the uncertainty bands.</li>
+</ul>
+
+</body>
+</html>
